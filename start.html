@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Leussinkbad Smoelenboek Maker</title>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="css/maker.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/maker.js"></script>
+</head>
+<body>
+
+<h2>Leussinkbad smoelenboek maker</h2>
+
+<div id="instructions">
+    <strong>Instructies</strong>
+    <ul>
+        <li>
+            Maak een excel sheet met alle personeelsleden met de volgende velden in deze volgorde:<br>
+            <span id="fields"></span>
+        </li>
+        <li>Plaats voor iedereen een pasfoto in de map Pasfotos en zorg dat het veld FotoBestand exact hetzelfde is als de bestandsnaam</li>
+        <li>Kopieer alle regels met personeelsleden en plak deze hieronder</li>
+        <li>Klik op "Maak smoelenboek" en daarna op "Printen"</li>
+        <li>Op een Mac kan je in het printvenster "Save as PDF" kiezen. Geen Mac, koop een Mac of even Googlen</li>
+    </ul>
+</div>
+
+<div id="inputForm">
+    <textarea id="personeelInput" rows="20" placeholder="Hier plakken dus...">Pietje	Puk	Bestuur	Voorzitter	pietje.puk@pp.com	0612341234	pv1.jpg
+Hermien	Willemse	Tuin	Landscaper	hermienenzo@gmail.com	0611223344	pv2.jpg
+Karel	Janssen	Bestuur	Penningmeester	karelw@hotmail.com	0611223344	pv3.jpg
+    </textarea>
+    <br>
+    <input type="button" id="generateBut" value="Maak smoelenboek">
+    <input type="button" id="printOutput" value="Printen">
+</div>
+
+<div id="output">
+    <iframe frameborder="0" id="outputFrame"></iframe>
+</div>
+</body>
+</html>
