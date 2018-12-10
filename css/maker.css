@@ -5,7 +5,7 @@ body {
 }
 ul { margin: 0; }
 input[type="button"] { width: 150px; }
-#fields { font-style: italic; }
+#fields { font-style: italic; font-size: 9pt; }
 
 #personeelInput { width:100%; margin-top: 10px; }
 #generateBut { }

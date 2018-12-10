@@ -14,11 +14,12 @@ FBMaker = {
   fieldMapping: [
     "Voornaam",
     "Achternaam",
-    "Team",
-    "Functie",
     "Email",
     "Telefoon",
-    "FotoBestand"
+    "Type medewerker",
+    "Teams",
+    "Aanspreekpunt",
+    "Functie"
   ],
 
 
@@ -61,7 +62,7 @@ FBMaker = {
            '<title>Leussinkbad Smoelenboek</title>\n' +
            '<meta charset="utf-8">\n' +
            '<meta http-equiv="content-type" content="text/html;charset=utf-8" />\n' +
-           '<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />\n' +
+           '<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />\n' +
            '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">\n' +
            '<link rel="stylesheet" type="text/css" href="css/smoelenboek.css" />\n' +
            '<style>@page { size: A4 }</style>' +
@@ -90,19 +91,19 @@ FBMaker = {
         .addClass("person")
         .append(
           $("<div>")
-            .addClass("info")
-            .append($("<div>").addClass("naam").html(p.Voornaam + " " + p.Achternaam))
-            .append($("<div>").addClass("team").html(p.Team))
-            .append($("<div>").addClass("functie").html(p.Functie))
-            .append($("<div>").addClass("email").html(p.Email))
-            .append($("<div>").addClass("telefoon").html(p.Telefoon))
+            .addClass("photo")
+            .append(
+              $("<div>").css("background-image", "url('" + FBMaker.photoPath + p.photo + "')")
+            )
         )
         .append(
           $("<div>")
-            .addClass("photo")
-            .append(
-              $("<div>").css("background-image", "url('" + FBMaker.photoPath + p.FotoBestand + "')")
-            )
+            .addClass("info")
+            .append($("<div>").addClass("naam").html(p.Voornaam + " " + p.Achternaam))
+            .append($("<div>").addClass("aanspreekpunt").html("Team aanspreekpunt"))
+            .append($("<div>").addClass("telefoon").html("T: " + p.Telefoon.replace("-", " ")))
+            .append($("<div>").addClass("email").html("E: " + p.Email))
+            .append($("<div>").addClass("functie").html(p.Functie))
         )
     );
   },
@@ -132,6 +133,9 @@ FBMaker = {
     p.forEach(function(f, index) {
       out[FBMaker.fieldMapping[index]] = f;
     });
+    out.photo = makePhotoFileName(out);
+    out.Aanspreekpunt = out.Aanspreekpunt.replace(";",",").split(",");
+    out.Teams= out.Teams.replace(";",",").split(",");
     return out;
   },
 
@@ -157,3 +161,10 @@ $(function() {
   // Show fields from mapping in instructions
   $("#fields").html( FBMaker.fieldMapping.join(", ") );
 });
+
+function makePhotoFileName(person) {
+  var photo = (person.Voornaam + " " + person.Achternaam).toLowerCase().replace(/\W+(.)/g, function (match, chr) {
+    return chr.toUpperCase();
+  });
+  return photo.charAt(0).toUpperCase() + photo.slice(1) + ".jpg";
+}
