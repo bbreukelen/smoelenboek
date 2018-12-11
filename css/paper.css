@@ -1,0 +1,35 @@
+@page { margin: 0 }
+body { margin: 0 }
+.sheet {
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    page-break-after: always;
+}
+
+/** Paper sizes **/
+body.A4               .sheet { width: 210mm; height: 296mm }
+body.A4.landscape     .sheet { width: 297mm; height: 209mm }
+
+/** Padding area **/
+.sheet.padding-7mm { padding: 7mm }
+.sheet.padding-10mm { padding: 10mm }
+.sheet.padding-15mm { padding: 15mm }
+.sheet.padding-20mm { padding: 20mm }
+.sheet.padding-25mm { padding: 25mm }
+
+/** For screen preview **/
+@media screen {
+    body { background: #e0e0e0 }
+    .sheet {
+        background: white;
+        box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+        margin: 5mm auto;
+    }
+}
+
+@media print {
+    body.A4.landscape { width: 297mm }
+    body.A4 { width: 210mm }
+}

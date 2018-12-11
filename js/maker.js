@@ -26,6 +26,7 @@ FBMaker = {
   /////////////////////////////////////////////
   // No novices below this point :-D
   /////////////////////////////////////////////
+  output: "",
 
   make: function() {
     // Collect input from textbox
@@ -38,57 +39,105 @@ FBMaker = {
     if (data[0] && data[0].length) return this.dataError(data[0]);
     data = data[1];
 
-    var output = "";
-    // Add header
-    output += this.addHeader();
-
-    // Add people data
-    output += this.addPeople(data);
-
-    // Add footer
-    output += this.addFooter();
+    this.output = "";
+    this.addHeader(); // Add header
+    this.addPeople(data); // Add people data
+    this.addFooter(); // Add footer
 
     $("#printOutput").show();
     $("#output").html("").append($("<iframe frameborder='0'/>")).show();
     var iFrameDoc = $("iframe")[0].contentDocument || $("iframe")[0].contentWindow.document;
-    iFrameDoc.write(output);
+    iFrameDoc.write(this.output);
     iFrameDoc.close();
+    this.output = "";
   },
 
   addHeader: function() {
-    return '<!DOCTYPE html>\n' +
+    this.output += '<!DOCTYPE html>\n' +
            '<html lang="nl">\n' +
            '<head>\n' +
            '<title>Leussinkbad Smoelenboek</title>\n' +
            '<meta charset="utf-8">\n' +
            '<meta http-equiv="content-type" content="text/html;charset=utf-8" />\n' +
            '<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />\n' +
-           '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">\n' +
+           '<link rel="stylesheet" href="css/paper.css">\n' +
            '<link rel="stylesheet" type="text/css" href="css/smoelenboek.css" />\n' +
            '<style>@page { size: A4 }</style>' +
            '</head>\n' +
-           '<body class="A4">' +
-           '<section class="sheet padding-10mm">';
+           '<body class="A4">';
   },
 
   addFooter: function() {
-    return '</body></html>';
+    this.output += '</body></html>';
+  },
+
+  openPage: function() {
+    this.output += '<section class="sheet padding-7mm"><div class="peoplePage">';
+  },
+
+  closePage: function() {
+    this.output +=  '</div></section>';
+  },
+
+  openTeam: function(team) {
+    this.output += '<div class="team" data-team="' + team + '">';
+  },
+
+  closeTeam: function() {
+    this.output +=  '</div>';
   },
 
   addPeople: function(data) {
     var self = this,
-      o = '<div class="people">';
-    data.forEach(function(p) {
-      o += self.makePerson(p).html();
+      pageOpen = false,
+      teamOpen = false,
+      lastTeam = null,
+      pageFull = false,
+      teamCount = 0,
+      colCount = 0;
+
+    // Go through teams
+    Object.keys(data).forEach(function(team) {
+      var people = self.sortTeam(team, data[team]);
+
+      // Go through people in team
+      people.forEach(function(p) {
+
+        // Close what needs to be closed
+        if (colCount >= 3) { colCount = 0; teamCount++; }
+        if (teamOpen && (lastTeam !== team || pageFull)) { self.closeTeam(); teamOpen = false; teamCount++; colCount = 0; }
+        if (teamCount >= 3) { teamCount = 0; pageFull = true; }
+        if (pageOpen && pageFull) {
+          if (teamOpen) { teamOpen = false; self.closeTeam(); }
+          self.closePage(); pageOpen = false; pageFull = false; teamCount = 0;
+        }
+
+        // Open what needs to be opened
+        if (!pageOpen) { self.openPage(); pageOpen = true; }
+        if (!teamOpen) { self.openTeam(team); teamOpen = true; lastTeam = team; }
+
+        self.output += self.makePerson(team, p).html();
+        colCount++;
+
+        console.log(pageOpen);
+        console.log(teamOpen);
+        console.log(lastTeam);
+        console.log(pageFull);
+        console.log(teamCount);
+        console.log(colCount);
+        console.log("--------");
+      });
     });
-    o += '</div>';
-    return o;
+
+    if (teamOpen) self.closeTeam();
+    if (pageOpen) self.closePage();
   },
 
-  makePerson: function(p) {
+  makePerson: function(team, p) {
+    var teamLead = p.Aanspreekpunt.indexOf(team) > -1;
     return $("<div>").append(
         $("<div>")
-        .addClass("person")
+        .addClass("person" + (teamLead ? " teamlead" : ""))
         .append(
           $("<div>")
             .addClass("photo")
@@ -100,7 +149,6 @@ FBMaker = {
           $("<div>")
             .addClass("info")
             .append($("<div>").addClass("naam").html(p.Voornaam + " " + p.Achternaam))
-            .append($("<div>").addClass("aanspreekpunt").html("Team aanspreekpunt"))
             .append($("<div>").addClass("telefoon").html("T: " + p.Telefoon.replace("-", " ")))
             .append($("<div>").addClass("email").html("E: " + p.Email))
             .append($("<div>").addClass("functie").html(p.Functie))
@@ -112,20 +160,29 @@ FBMaker = {
     var self = this;
     data = data.split("\n");
     if (!data) return null;
-    var persons = [],
+    var teams = {},
       errors = [];
+
     data.forEach(function(personRaw) {
       if (!personRaw) return;
       var person = personRaw.split("\t");
       if (person.length < 2) return; // Skip
-      if (person.length !== FBMaker.fieldMapping.length) {
+      var personO = self.personArrayToObject(person);
+      if (!personO.Voornaam || !personO.Achternaam) {
         console && console.log(person);
         return errors.push("Regel: " + personRaw);
       }
-      persons.push(self.personArrayToObject(person));
+
+      // Check teams
+      if (personO.Teams) {
+        personO.Teams.forEach(function(team) {
+          if (teams[team] === undefined) { teams[team] = []; }
+          teams[team].push(personO);
+        });
+      }
     });
 
-    return [ errors, persons ];
+    return [ errors, teams ];
   },
 
   personArrayToObject: function(p) {
@@ -137,6 +194,18 @@ FBMaker = {
     out.Aanspreekpunt = out.Aanspreekpunt.replace(";",",").split(",");
     out.Teams= out.Teams.replace(";",",").split(",");
     return out;
+  },
+
+  sortTeam: function(teamName, people) {
+    return people.sort(function(a, b) {
+      var aLead = a.Aanspreekpunt && a.Aanspreekpunt.indexOf(teamName) > -1,
+          bLead = b.Aanspreekpunt && b.Aanspreekpunt.indexOf(teamName) > -1,
+        aName = a.Voornaam + ' ' + a.Achternaam,
+        bName = b.Voornaam + ' ' + b.Achternaam;
+      if (aLead === bLead && aName === bName) return 0;
+      if (aLead !== bLead) return aLead ? -1 : 1;
+      return aName < bName ? -1 : 1;
+    });
   },
 
   dataError: function(errors) {
