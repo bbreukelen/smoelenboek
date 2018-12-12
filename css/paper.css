@@ -21,11 +21,11 @@ body.A4.landscape     .sheet { width: 297mm; height: 209mm }
 
 /** For screen preview **/
 @media screen {
-    body { background: #e0e0e0 }
+    body { }
     .sheet {
         background: white;
         box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-        margin: 5mm auto;
+        margin: 5mm 5px;
     }
 }
 

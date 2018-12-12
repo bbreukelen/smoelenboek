@@ -27,8 +27,11 @@ FBMaker = {
   // No novices below this point :-D
   /////////////////////////////////////////////
   output: "",
+  textAreaHeight: "",
 
   make: function() {
+    this.hideInstr();
+
     // Collect input from textbox
     var data = $("#personeelInput").val();
     if (!data) return this.dataError();
@@ -46,9 +49,16 @@ FBMaker = {
 
     $("#printOutput").show();
     $("#output").html("").append($("<iframe frameborder='0'/>")).show();
-    var iFrameDoc = $("iframe")[0].contentDocument || $("iframe")[0].contentWindow.document;
+    var iFrame = $("iframe")[0],
+      iFrameDoc = iFrame.contentDocument || iFrame.contentWindow.document;
     iFrameDoc.write(this.output);
     iFrameDoc.close();
+
+    setTimeout(function() {
+      iFrame.height = (iFrameDoc.body.scrollHeight + 50).toFixed() + "px";
+    }, 500);
+
+
     this.output = "";
   },
 
@@ -84,7 +94,7 @@ FBMaker = {
   },
 
   closeTeam: function() {
-    this.output +=  '</div>';
+    this.output +=  '<span class="clearfix"></span></div>';
   },
 
   addPeople: function(data) {
@@ -93,6 +103,7 @@ FBMaker = {
       teamOpen = false,
       lastTeam = null,
       pageFull = false,
+      bumpTeamcount = false,
       teamCount = 0,
       colCount = 0;
 
@@ -104,8 +115,9 @@ FBMaker = {
       people.forEach(function(p) {
 
         // Close what needs to be closed
-        if (colCount >= 3) { colCount = 0; teamCount++; }
-        if (teamOpen && (lastTeam !== team || pageFull)) { self.closeTeam(); teamOpen = false; teamCount++; colCount = 0; }
+        if (colCount >= 3) { colCount = 0; bumpTeamcount = true; }
+        if (teamOpen && (lastTeam !== team || pageFull)) { self.closeTeam(); teamOpen = false; bumpTeamcount = true; colCount = 0; }
+        if (bumpTeamcount) { bumpTeamcount = false; teamCount++; }
         if (teamCount >= 3) { teamCount = 0; pageFull = true; }
         if (pageOpen && pageFull) {
           if (teamOpen) { teamOpen = false; self.closeTeam(); }
@@ -119,13 +131,14 @@ FBMaker = {
         self.output += self.makePerson(team, p).html();
         colCount++;
 
+        console.log(p.Voornaam);
         console.log(pageOpen);
         console.log(teamOpen);
         console.log(lastTeam);
         console.log(pageFull);
         console.log(teamCount);
         console.log(colCount);
-        console.log("--------");
+        console.log("-------------");
       });
     });
 
@@ -142,7 +155,7 @@ FBMaker = {
           $("<div>")
             .addClass("photo")
             .append(
-              $("<div>").css("background-image", "url('" + FBMaker.photoPath + p.photo + "')")
+              $("<div>").css("background-image", "url('" + FBMaker.photoPath + p.photo + "'), url('" + FBMaker.photoPath + "_noface.jpg')")
             )
         )
         .append(
@@ -218,6 +231,20 @@ FBMaker = {
 
   print: function() {
     $("iframe")[0].contentWindow.print();
+  },
+
+  hideInstr: function() {
+    $("#instructionsContent").slideUp();
+    $("#instOpenBut").show();
+    var ta = $("#personeelInput");
+    this.textAreaHeight = ta.height();
+    ta.css("height", "28px");
+  },
+
+  showInstr: function(e) {
+    $("#instOpenBut").hide();
+    $("#instructionsContent").slideDown();
+    $("#personeelInput").css("height", (this.textAreaHeight || 100) + "px");
   }
 };
 
@@ -226,6 +253,7 @@ $(function() {
   // Init buttons etc
   $("#generateBut").click(FBMaker.make.bind(FBMaker));
   $("#printOutput").click(FBMaker.print.bind(FBMaker));
+  $("#instOpenBut").click(FBMaker.showInstr.bind(FBMaker));
 
   // Show fields from mapping in instructions
   $("#fields").html( FBMaker.fieldMapping.join(", ") );
