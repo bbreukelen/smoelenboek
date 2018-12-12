@@ -27,39 +27,37 @@ FBMaker = {
   // No novices below this point :-D
   /////////////////////////////////////////////
   output: "",
-  textAreaHeight: "",
+  teamsOrdered: [],
 
   make: function() {
-    this.hideInstr();
+    var self = this;
+    $("#collapse1").collapse();
 
-    // Collect input from textbox
-    var data = $("#personeelInput").val();
-    if (!data) return this.dataError();
+    // Save team ordering
+    localStorage.setItem("teamsOrdered", JSON.stringify(FBMaker.teamsOrdered || []));
 
-    // Move raw data to structured data
-    data = this.makeStructuredData(data);
-    if (data === null || data[1] === null) return this.dataError();
-    if (data[0] && data[0].length) return this.dataError(data[0]);
-    data = data[1];
+    this.getAndProcessData(function(err, data) {
+      if (err) { return self.dataError(err); }
 
-    this.output = "";
-    this.addHeader(); // Add header
-    this.addPeople(data); // Add people data
-    this.addFooter(); // Add footer
+      self.output = "";
+      self.addHeader(); // Add header
+      self.addPeople(data); // Add people data
+      self.addFooter(); // Add footer
 
-    $("#printOutput").show();
-    $("#output").html("").append($("<iframe frameborder='0'/>")).show();
-    var iFrame = $("iframe")[0],
-      iFrameDoc = iFrame.contentDocument || iFrame.contentWindow.document;
-    iFrameDoc.write(this.output);
-    iFrameDoc.close();
+      $("#printOutput").show();
+      $("#output").html("").append($("<iframe frameborder='0'/>")).show();
+      var iFrame = $("iframe")[0],
+        iFrameDoc = iFrame.contentDocument || iFrame.contentWindow.document;
+      iFrameDoc.write(self.output);
+      iFrameDoc.close();
 
-    setTimeout(function() {
-      iFrame.height = (iFrameDoc.body.scrollHeight + 50).toFixed() + "px";
-    }, 500);
+      setTimeout(function() {
+        iFrame.height = (iFrameDoc.body.scrollHeight + 50).toFixed() + "px";
+      }, 500);
 
 
-    this.output = "";
+      self.output = "";
+    });
   },
 
   addHeader: function() {
@@ -108,7 +106,7 @@ FBMaker = {
       colCount = 0;
 
     // Go through teams
-    Object.keys(data).forEach(function(team) {
+    self.teamsOrdered.forEach(function(team) {
       var people = self.sortTeam(team, data[team]);
 
       // Go through people in team
@@ -130,15 +128,6 @@ FBMaker = {
 
         self.output += self.makePerson(team, p).html();
         colCount++;
-
-        console.log(p.Voornaam);
-        console.log(pageOpen);
-        console.log(teamOpen);
-        console.log(lastTeam);
-        console.log(pageFull);
-        console.log(teamCount);
-        console.log(colCount);
-        console.log("-------------");
       });
     });
 
@@ -167,6 +156,21 @@ FBMaker = {
             .append($("<div>").addClass("functie").html(p.Functie))
         )
     );
+  },
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Data handling
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  getAndProcessData: function(cb) {
+    // Collect input from textbox
+    var data = $("#personeelInput").val();
+    if (!data) return cb([]);
+
+    // Move raw data to structured data
+    data = this.makeStructuredData(data);
+    if (data === null || data[1] === null) return cb([]); // Returns error
+    if (data[0] && data[0].length) return cb(this.dataError(data[0]));
+    cb(null, data[1]);
   },
 
   makeStructuredData: function(data) {
@@ -221,6 +225,44 @@ FBMaker = {
     });
   },
 
+  makeTeams: function() {
+    // Updates list of teams
+    var self = this;
+    this.getAndProcessData(function(err, data) {
+      var c = $("#teams").html(""); // set and empty
+      if (err || !data) return; // Ignore errors
+
+      var teams = Object.keys(data); // Get teams from data
+
+      // Make order based on last order
+      var orderTemp = self.teamsOrdered.filter((o) => teams.includes(o));
+      self.teamsOrdered = orderTemp.concat(teams.filter((o) => !orderTemp.includes(o)));
+
+      teams = null; data = null; // Clear mem
+
+      self.teamsOrdered.forEach(function(team) {
+        c.append($("<li>").addClass("list-group-item").text(team));
+      });
+
+      // Setup drag sorting
+      if (self.teamsOrdered.length) {
+        c
+          .sortable('destroy')
+          .sortable({placeholderClass: 'list-group-item'})
+          .on('sortupdate', FBMaker.teamsSorted.bind(FBMaker));
+
+        $("#saveSort").show();
+      } else {
+        $("#saveSort").hide();
+      }
+    });
+  },
+
+  teamsSorted: function() {
+    // Store sorting in object and save for later
+    this.teamsOrdered = $("#teams li").map(function() { return this.innerHTML; }).get();
+  },
+
   dataError: function(errors) {
     if (typeof errors === "undefined" || errors.length < 1) {
       alert("Onjuiste data ingevoerd");
@@ -231,20 +273,6 @@ FBMaker = {
 
   print: function() {
     $("iframe")[0].contentWindow.print();
-  },
-
-  hideInstr: function() {
-    $("#instructionsContent").slideUp();
-    $("#instOpenBut").show();
-    var ta = $("#personeelInput");
-    this.textAreaHeight = ta.height();
-    ta.css("height", "28px");
-  },
-
-  showInstr: function(e) {
-    $("#instOpenBut").hide();
-    $("#instructionsContent").slideDown();
-    $("#personeelInput").css("height", (this.textAreaHeight || 100) + "px");
   }
 };
 
@@ -253,10 +281,19 @@ $(function() {
   // Init buttons etc
   $("#generateBut").click(FBMaker.make.bind(FBMaker));
   $("#printOutput").click(FBMaker.print.bind(FBMaker));
-  $("#instOpenBut").click(FBMaker.showInstr.bind(FBMaker));
 
   // Show fields from mapping in instructions
   $("#fields").html( FBMaker.fieldMapping.join(", ") );
+
+  // Update teams when changing members
+  $("#personeelInput").on("input", FBMaker.makeTeams.bind(FBMaker)).trigger('input');
+
+  // Pull last used teamOrdered
+  try {
+    FBMaker.teamsOrdered = JSON.parse(localStorage.getItem("teamsOrdered") || "[]");
+  } catch (err) {
+    FBMaker.teamsOrdered = [];
+  }
 });
 
 function makePhotoFileName(person) {

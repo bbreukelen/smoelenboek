@@ -3,45 +3,74 @@
 <head>
     <title>Leussinkbad Smoelenboek Maker</title>
     <meta charset="utf-8">
-    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" type="text/css" href="css/maker.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans"/>
+    <link rel="stylesheet" type="text/css" href="css/maker.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery.sortable.min.js"></script>
     <script type="text/javascript" src="js/maker.js"></script>
 </head>
 <body>
 
-<h2>Leussinkbad smoelenboek maker</h2>
+<h3>Leussinkbad smoelenboek maker</h3>
 
-<div id="instructions">
-    <strong>Instructies</strong> &nbsp; <a href="#" id="instOpenBut">open</a>
-    <div id="instructionsContent">
-        <ul>
-            <li>Maak een excel sheet met alle personeelsleden</li>
-            <li>Plaats fotos in de map Pasfotos met bestandsnaam VoornaamAchternaam.jpg (bv. JanPaulVanDerStoep.jpg)</li>
-            <li>Kopieer alle regels met personeelsleden en plak deze hieronder</li>
-            <li>Klik op "Maak smoelenboek" en daarna op "Printen"</li>
-            <li>Op een Mac kan je in het printvenster "Save as PDF" kiezen. Geen Mac, koop een Mac of even Googlen</li>
-        </ul>
+<div id="instructions" class="panel panel-default">
+    <div class="panel-heading">
+        <div class="btn-group pull-right"><a data-toggle="collapse" href="#collapse1" class="btn btn-primary pull-right">+</a></div>
+        <h4>Instructies en data</h4>
+    </div>
+
+    <div id="collapse1" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <ul>
+                <li>Gebruik Chrome of Firefox!!</li>
+                <li>Open een excel sheet met alle personeelsleden</li>
+                <li>Plaats fotos in de map Pasfotos met bestandsnaam VoornaamAchternaam.jpg (bv.
+                    JanPaulVanDerStoep.jpg)
+                </li>
+                <li>Kopieer alle regels met personeelsleden en plak deze hieronder</li>
+                <li>Klik op "Maak smoelenboek" en daarna op "Printen"</li>
+                <li>Op een Mac kan je in het printvenster "Save as PDF" kiezen. Geen Mac, koop een Mac of even Googlen
+                </li>
+            </ul>
+
+            <br>
+
+            <div id="inputForm" class="row">
+                <div id="inputCol" class="col-sm-8">
+                    <b>Medewerkers</b> (<span id="fields"></span>)<br>
+                    <textarea id="personeelInput" rows="20" placeholder="Medewerkers hier plakken"></textarea>
+                </div>
+
+                <div id="teamCol" class="col-sm-4">
+                    <b>Teams</b> (sleep op volgorde)<br>
+                    <ul class="list-group list-group-sortable" id="teams"></ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="inputForm">
-    <span id="fields"></span><br>
-    <textarea id="personeelInput" rows="20" placeholder="Hier plakken dus...">Ada	Ritzer	ritzer@hotmail.nl	06-21561121	vrijwilliger	Promo-team,Houtdorp		Fotograaf, creativiteit, online communicatie (Facebook en site)
-Alfred	van Lenthe	alfred.van_lenthe@boehringer-ingelheim.com	06-53607670	vrijwilliger	Bestuur		Test
-Anne-Wil	Renskers	114391@isendoorn.nl	06-57884545	vrijwilliger	Kiosk		ook toezicht 2019?
-Boudewijn  	van Breukelen	b@vbreukelen.com	06-29623573	vrijwilliger	Bestuur	Techniek	</textarea>
-    <br>
-    <input type="button" id="generateBut" value="Maak smoelenboek">
-    <input type="button" id="printOutput" value="Printen">
-</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <input type="button" id="generateBut" value="Maak smoelenboek">
+        <input type="button" id="printOutput" value="Printen">
+    </div>
 
-<div id="output">
-    <iframe frameborder="0" id="outputFrame"></iframe>
+    <div class="panel-body">
+        <div id="output">
+            <iframe frameborder="0" id="outputFrame"></iframe>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

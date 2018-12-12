@@ -21,6 +21,8 @@ body {
     color: white;
     width: 22px;
     height: calc(100% - 10px);
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
 }
 .team:after {
     content: attr(data-team);
@@ -52,4 +54,12 @@ body {
 .functie { word-break: break-all; }
 
 .photo { width: 100%; height: 214px; }
-.photo div { width: 100%; height: 100%; background-size: cover; background-position: center; }
+
+.photo div {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+}

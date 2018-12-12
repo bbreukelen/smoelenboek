@@ -7,9 +7,9 @@ ul { margin: 0; }
 input[type="button"] { width: 150px; }
 #fields { font-style: italic; font-size: 9pt; }
 #instructions { margin-bottom: 5px; }
-#instOpenBut { display: none; }
 #instructionsContent { display: block; }
-
+ul.list-group-sortable, ul.list-group-sortable li { cursor: move; }
+#saveSort { display: none; }
 
 #personeelInput { width:100%; }
 #generateBut { }
