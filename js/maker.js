@@ -55,7 +55,6 @@ FBMaker = {
         iFrame.height = (iFrameDoc.body.scrollHeight + 50).toFixed() + "px";
       }, 500);
 
-
       self.output = "";
     });
   },
@@ -76,7 +75,9 @@ FBMaker = {
   },
 
   addFooter: function() {
-    this.output += '</body></html>';
+    this.output += '' +
+      '<script src="js/photoResizer.js"></script>' +
+      '</body></html>';
   },
 
   openPage: function() {
@@ -137,6 +138,7 @@ FBMaker = {
 
   makePerson: function(team, p) {
     var teamLead = p.Aanspreekpunt.indexOf(team) > -1;
+
     return $("<div>").append(
         $("<div>")
         .addClass("person" + (teamLead ? " teamlead" : ""))
@@ -144,7 +146,9 @@ FBMaker = {
           $("<div>")
             .addClass("photo")
             .append(
-              $("<div>").css("background-image", "url('" + FBMaker.photoPath + p.photo + "'), url('" + FBMaker.photoPath + "_noface.jpg')")
+              $("<canvas>")
+                .attr("data-src-backup", FBMaker.photoPath + "_noface.jpg")
+                .attr("data-src", FBMaker.photoPath + p.photo)
             )
         )
         .append(
