@@ -31,7 +31,6 @@ FBMaker = {
 
   make: function() {
     var self = this;
-    $("#collapse1").collapse();
 
     // Save team ordering
     localStorage.setItem("teamsOrdered", JSON.stringify(FBMaker.teamsOrdered || []));
@@ -41,6 +40,7 @@ FBMaker = {
 
       self.output = "";
       self.addHeader(); // Add header
+      self.addCoverPage(); // Add cover page
       self.addPeople(data); // Add people data
       self.addFooter(); // Add footer
 
@@ -56,6 +56,8 @@ FBMaker = {
       }, 500);
 
       self.output = "";
+
+      $("#collapse1").collapse();
     });
   },
 
@@ -86,6 +88,10 @@ FBMaker = {
 
   closePage: function() {
     this.output +=  '</div></section>';
+  },
+
+  addCoverPage: function() {
+    this.output += window.coverPage || "";
   },
 
   openTeam: function(team) {
