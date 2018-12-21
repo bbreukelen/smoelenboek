@@ -121,7 +121,7 @@ FBMaker = {
 
         // Close what needs to be closed
         if (colCount >= 3) { colCount = 0; bumpTeamcount = true; }
-        if (teamOpen && (lastTeam !== team || pageFull)) { self.closeTeam(); teamOpen = false; bumpTeamcount = true; colCount = 0; }
+        if (teamOpen && (lastTeam !== team || pageFull)) { pageFull = true; self.closeTeam(); teamOpen = false; bumpTeamcount = true; colCount = 0; }
         if (bumpTeamcount) { bumpTeamcount = false; teamCount++; }
         if (teamCount >= 3) { teamCount = 0; pageFull = true; }
         if (pageOpen && pageFull) {
