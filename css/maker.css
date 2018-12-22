@@ -11,7 +11,7 @@ input[type="button"] { width: 150px; }
 ul.list-group-sortable, ul.list-group-sortable li { cursor: move; }
 #saveSort { display: none; }
 
-#personeelInput { width:100%; }
+#personeelInput { width:100%; font-size: 10px; font-family: Courier; }
 #generateBut { }
 #printOutput { display: none; }
 

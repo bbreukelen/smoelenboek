@@ -41,6 +41,7 @@ FBMaker = {
       self.output = "";
       self.addHeader(); // Add header
       self.addCoverPage(); // Add cover page
+      self.addColofon(); // Add colofon page
       self.addPeople(data); // Add people data
       self.addFooter(); // Add footer
 
@@ -92,6 +93,10 @@ FBMaker = {
 
   addCoverPage: function() {
     this.output += window.coverPage || "";
+  },
+
+  addColofon: function() {
+    this.output += window.colofon || "";
   },
 
   openTeam: function(team) {
