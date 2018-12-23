@@ -166,8 +166,8 @@ FBMaker = {
           $("<div>")
             .addClass("info")
             .append($("<div>").addClass("naam").html(p.Voornaam + " " + p.Achternaam))
-            .append($("<div>").addClass("telefoon").html("T: " + p.Telefoon.replace("-", " ")))
-            .append($("<div>").addClass("email").html("E: " + p.Email))
+            .append($("<div>").addClass("telefoon").html(p.Telefoon && ("T: " + p.Telefoon.replace(/[- ]/, "")) || " "))
+            .append($("<div>").addClass("email").html(p.Email && ("E: " + p.Email) || " "))
             .append($("<div>").addClass("functie").html(p.Functie))
         )
     );
