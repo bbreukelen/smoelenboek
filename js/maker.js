@@ -309,6 +309,11 @@ $(function() {
   } catch (err) {
     FBMaker.teamsOrdered = [];
   }
+
+  var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  if (!isChrome) {
+    alert("LET OP! Leussinkbad smoelenboek werkt ALLEEN in Google Chrome!");
+  }
 });
 
 function makePhotoFileName(person) {
