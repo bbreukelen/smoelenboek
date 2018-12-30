@@ -27,4 +27,4 @@ People can be members of multiple teams. In that case, comma-separate them in th
 The face book is created per team so people on multiple teams will appear for each team they are on.
 
 ### License
-[GNU](https://github.com/bbreukelen/smoelenboek/master/LICENSE)
+[GNU](https://github.com/bbreukelen/smoelenboek/blob/master/LICENSE)
