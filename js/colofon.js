@@ -2,7 +2,7 @@ window.colofon = `
 <section class="sheet padding-7mm">
     <br/><br/><br/><br/>
     <div style="text-align: center">
-        <i>versie: 4 januari 2019</i><br/>
+        <i>versie: ${(new Date().toLocaleString('en-US').split(', '))[0]}</i><br/>
    </div>
     
     <br/><br/>
