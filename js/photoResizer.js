@@ -1,6 +1,6 @@
 /*
 * Created by Boudewijn van Breukelen at Dec 3rd 2018
-* Finds photos and replaces them with canvases to reduce document size drastically
+* Finds canvas elements for photos and resized the photos to reduce document size drastically!
 */
 
 function resizePhotos() {

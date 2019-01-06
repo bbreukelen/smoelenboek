@@ -4,6 +4,23 @@ body {
 
 .sheet { background: #ffffff; }
 
+body.A4 .coverPage {
+    height: 297.1mm; /* Slightly larger hight for coverpage to eliminate white banner at bottom */
+}
+
+section.coverPage canvas {
+    width: 100%;
+    height: 297.1mm;
+}
+/*
+section.coverPage {
+    background: url('../images/cover.jpg') no-repeat;
+    background-size: cover;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+}
+*/
+
 .peoplePage { margin: -5px; }
 
 .team {
