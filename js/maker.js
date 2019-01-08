@@ -8,7 +8,7 @@
 FBMaker = {
 
   // Configuration
-  photoPath: "Pasfotos/", // Relative path to folder where the pasfoto's reside (add trailing /)
+  photoPath: "../Pasfotos/", // Relative path to folder where the pasfoto's reside (add trailing /)
 
   // Mapping of the data fields in chronological order (case-sensitive using CamelCase)
   fieldMapping: [
@@ -41,7 +41,7 @@ FBMaker = {
       self.output = "";
       self.addHeader(); // Add header
       self.addCoverPage(); // Add cover page
-      self.addColofon(); // Add colofon page
+      self.addInfoPage(); // Add info page
       self.addPeople(data); // Add people data
       self.addFooter(); // Add footer
 
@@ -95,8 +95,8 @@ FBMaker = {
     this.output += window.coverPage || "";
   },
 
-  addColofon: function() {
-    this.output += window.colofon || "";
+  addInfoPage: function() {
+    this.output += window.infoPage || "";
   },
 
   openTeam: function(team) {

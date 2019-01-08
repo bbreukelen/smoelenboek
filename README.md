@@ -12,7 +12,8 @@ Google Chrome
 
 ### Installation
 * Clone the source-code into your computer.
-* Add the people's photos in the "Pasfotos" using JohnDoe.jpg as filename
+* Add the people's photos in a folder called "Pasfotos" using JohnDoe.jpg as filename
+  the folder should be in the root's parent folder, so ../Pasfotos
 
 ### Usage
 * Open Make-Face-Book.html in Google Chrome
@@ -25,6 +26,11 @@ Google Chrome
 ### Employee list structure
 People can be members of multiple teams. In that case, comma-separate them in the team column.  
 The face book is created per team so people on multiple teams will appear for each team they are on.
+
+### Making changes
+The cover page is in js/coverPage.js and contains a page-covering image stored in images/cover.jpg.
+The info page is in js/infoPage.js and is simply html packaged in javascript making it easy to edit.
+The stylesheet of the output can be modified in css/smoelenboek.css.
 
 ### License
 [GNU](https://github.com/bbreukelen/smoelenboek/blob/master/LICENSE)
