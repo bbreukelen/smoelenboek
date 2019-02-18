@@ -29,6 +29,6 @@ window.infoPage = `
     <div class="heading">Wijzigingen</div>
     <div class="infoBlock">
         Geef wijzigingen en nieuwe pasfoto's aub door op bestuur@leussinkbad.nl.<br/>
-        Als er wijzigingen zijn zal er eens per kwartaal een versie van dit smoelenboek uitgegeven worden.<br/>
+        Na wijzigingen zal er eens per kwartaal een nieuwe versie van dit smoelenboek uitgegeven worden.<br/>
     </div>
 </section>`;
