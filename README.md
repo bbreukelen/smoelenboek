@@ -34,3 +34,6 @@ The stylesheet of the output can be modified in css/smoelenboek.css.
 
 ### License
 [GNU](https://github.com/bbreukelen/smoelenboek/blob/master/LICENSE)
+
+### Author
+Created by Boudewijn van Breukelen @ Future Software
