@@ -15,6 +15,7 @@ window.infoPage = `
     <div class="infoBlock">
       <table border="0">
         <tr><td>Bedrijfsleiding:</td><td>beheerder@leussinkbad.nl</td></tr>
+        <tr><td>Zwemles:</td><td>zwemles@leussinkbad.nl</td></tr>
         <tr><td>Bestuur:</td><td>bestuur@leussinkbad.nl</td></tr>
         <tr><td>Toezichthouders:</td><td>toezichthouders@leussinkbad.nl</td></tr>
         <tr><td>Kiosk:</td><td>kiosk@leussinkbad.nl</td></tr>
