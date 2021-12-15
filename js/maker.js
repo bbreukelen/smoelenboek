@@ -224,7 +224,7 @@ FBMaker = {
     });
     out.photo = makePhotoFileName(out);
     out.Aanspreekpunt = out.Aanspreekpunt.replace(";",",").split(",");
-    out.Teams= out.Teams.replace(";",",").split(",");
+    out.Teams = out.Teams.replace(";",",").split(",");
     return out;
   },
 
@@ -247,7 +247,7 @@ FBMaker = {
       var c = $("#teams").html(""); // set and empty
       if (err || !data) return; // Ignore errors
 
-      var teams = Object.keys(data); // Get teams from data
+      var teams = Object.keys(data).filter(t => t !== ""); // Get teams from data
 
       // Make order based on last order
       var orderTemp = self.teamsOrdered.filter((o) => teams.includes(o));
