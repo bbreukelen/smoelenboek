@@ -317,8 +317,12 @@ $(function() {
 });
 
 function makePhotoFileName(person) {
-  var photo = (person.Voornaam + " " + person.Achternaam).toLowerCase().replace(/\W+(.)/g, function (match, chr) {
-    return chr.toUpperCase();
-  });
+  var photo = (person.Voornaam + " " + person.Achternaam)
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/\W+(.)/g, function (match, chr) {
+        return chr.toUpperCase();
+      });
+  console.log(photo)
   return photo.charAt(0).toUpperCase() + photo.slice(1) + ".jpg";
 }

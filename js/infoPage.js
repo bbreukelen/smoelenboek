@@ -17,8 +17,6 @@ window.infoPage = `
         <tr><td>Bedrijfsleiding:</td><td>beheerder@leussinkbad.nl</td></tr>
         <tr><td>Zwemles:</td><td>zwemles@leussinkbad.nl</td></tr>
         <tr><td>Bestuur:</td><td>bestuur@leussinkbad.nl</td></tr>
-        <tr><td>Toezichthouders:</td><td>toezichthouders@leussinkbad.nl</td></tr>
-        <tr><td>Kiosk:</td><td>kiosk@leussinkbad.nl</td></tr>
         <tr><td>Promoteam:</td><td>promoteam@leussinkbad.nl</td></tr>
         <tr><td>Activiteitencommissie:</td><td>activiteiten@leussinkbad.nl</td></tr>
         <tr><td>Houtdorp:</td><td>houtdorp@leussinkbad.nl</td></tr>
@@ -34,14 +32,14 @@ window.infoPage = `
     
     <div class="heading">Informatie delen</div>
     <div class="infoBlock">
-        Wil je interessante informatie buiten jouw team?<br/>
-        Stuur dan een email naar één of meerdere team adressen en geef aan dat het voor het hele team bestemd is.
-        De team aanspreekpunten zorgen dan voor de interene verspreiding.<br/>
+        Wil je iets delen buiten jouw eigen team? Heel graag!<br/>
+	Deel het via WhatsApp in de commissies app-groep of stuur een e-mail naar één of meerdere team adressen.
     </div>
       
     <div class="heading">Wijzigingen</div>
     <div class="infoBlock">
         Geef wijzigingen en nieuwe pasfoto's aub door op bestuur@leussinkbad.nl.<br/>
-        Na wijzigingen zal er eens per kwartaal een nieuwe versie van dit smoelenboek uitgegeven worden.<br/>
+        Na wijzigingen zal er een nieuwe versie van dit smoelenboek uitgegeven worden.<br/>
+	De nieuwste versie van het smoelenboek staat op Google Drive in de map <i>_Gedeeld met iedereen</i>.<br/>
     </div>
 </section>`;
